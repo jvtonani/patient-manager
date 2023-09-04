@@ -5,6 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'User::signin');
-$routes->get('/patients/get', 'User::getPatients');
-$routes->delete('/patients/remove', 'User::removePatient');
+$routes->get('/patients/get', 'Patient::getPatients');
+$routes->delete('/patients/delete', 'Patient::removePatient');
+$routes->post('/patients/insert', 'Patient::setPatient');
+$routes->patch('/patients/update', 'Patient::updatePatient');
