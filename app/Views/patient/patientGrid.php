@@ -1,5 +1,8 @@
 <div class="container-xxl p-2">
     <h2>Listagem de Pacientes</h2>
+        <a href="<?=base_url().'patients/insert'?>">
+            <button type="button" class="btn btn-primary">Adicionar</button>
+        </a>
     <table class="table">
         <thead>
             <tr>
@@ -23,16 +26,20 @@
                         <?php echo $patient['name']; ?>
                     </td>
                     <td>
-                        <?php echo $patient['birthday']; ?>
+                        <?php echo date("d/m/Y", strtotime($patient['birthday'])); ?>
                     </td>
                     <td>
                         <?php echo $patient['gender']; ?>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary">Editar</button>
+                        <a href="<?=base_url().'patients/'.$patient['id']?>">
+                            <button type="button" class="btn btn-primary">Editar</button>
+                        </a>
                     </td>
                     <td>
-                    <button type="button" class="btn btn-danger">Excluir</button>
+                        <a href="<?=base_url().'patients/delete/'.$patient['id']?>">
+                            <button type="button" class="btn btn-danger">Excluir</button>
+                        </a>
                     </td>
                 </tr>
             <?php endforeach; ?>

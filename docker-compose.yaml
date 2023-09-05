@@ -1,17 +1,17 @@
 version: '3.8'
 services:
-  php-apache-environment:
-    container_name: patient-manager
-    image: php:8.2-apache
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    depends_on:
-      - db
-    volumes:
-      - ./:/var/www/html/
-    ports:
-      - 8000:8080
+  #php-apache-environment:
+  #  container_name: patient-manager
+  #  image: php:8.2-apache
+  #  build:
+  #    context: ./
+  #    dockerfile: Dockerfile
+  #  depends_on:
+  #    - db
+  #  volumes:
+  #    - ./:/var/www/ci4-app
+  #  ports:
+  #    - 80:80
   db:
     image: postgres
     restart: always 

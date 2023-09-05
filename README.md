@@ -1,62 +1,66 @@
-# CodeIgniter 4 Application Starter
+# Gerenciador de Pacientes (Teste)
+Aplicativo responsável por fazer o gerenciamento de pacientes. Desenvolvido através do framework MVC CodeIgniter
 
-## What is CodeIgniter?
+Casos de uso
+  * Login: Feito através da API do Github
+  * Aba Pacientes: Faz a listagem de pacientes
+  * Adicionar: Abre formulário para preenchimento de novo paciente
+  * Editar: Abre formulário para editar informações de paciente
+  * Excluir: Exclui paciente da lista
+  ![image](https://github.com/jvtonani/patient-manager/assets/34126847/e2bfd88a-f376-4fc4-b584-34fbd0c4e9d2)
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Principais Dificuldades
+* Durante o processo de desenvolvimento não houveram dificuldades de implementação de features
+* Boa parte do tempo do desafio foi gasto na tentativa de dockerizar a aplicação. Diversas abordagem foram testadas mas não houveram sucesso
+  * Criação de container utilizando a imagem php8.2-apache
+  * Criação de container utilizando a imagem php8.2-fpm + NGINX
+  * Criação de container utilizando a imagem do Bitnami para o CodeIgniter
+ * Em todas as abordagens acima, o retorno da aplicação era 403 Forbidden
+   * Os arquivos de hosts do apache foram revistos, bem como as configurações do nginx
+   * As devidas permissões as pastas do projeto também foram revisadas
+ * Pelos motivos acima, apesar de não ser a abordagem mais apropriada, foi necessário montar a aplicação através de um ambiente local, sem uso de containers
+## Instalação
+### Pré Requisitos
+* PHP 8.2
+* Composer
+* Docker e docker-compose
+* Clone da aplicação
+~~~
+https://github.com/jvtonani/patient-manager.git
+~~~
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
-
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
-
-The user guide corresponding to the latest version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
-
-## Installation & updates
-
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
-
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
-
-## Setup
-
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
-
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 7.4 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+### Banco de dados
+* No diretório raiz, execute o comando. 
+  ~~~
+  docker-compose up -d
+  ~~~
+* O banco de dados pode ser acessado através das credenciais
+  ~~~
+    Host: localhost
+    Port: 5432
+    Database: postgres
+    User: postgres
+    Password:teste_tecnico
+  ~~~
+### Ambiente Local
+  * Faça a configuração do arquivo php.ini
+ ~~~
+  extension=curl
+  extension=intl
+  extension=pgsql
+  extension=mbstring
+  extension=exif
+  extension=mysqli
+  curl.cainfo=CAMINHO_PARA_CACERT.PEM (Localizado no diretório raiz do projeto)
+  ~~~
+  * Instale as dependências
+  ~~~
+  composer update
+  ~~~
+  * Renomeie o arquivo env para .env adicionando as variáveis necessárias
+  * Rode as migrations e inicie a aplicação
+  ~~~
+  php spark migrate
+  php spark serve
+  ~~~
+  * A aplicação pode ser acessada através do seu ambiente local http://localhost:8080

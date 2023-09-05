@@ -3,22 +3,33 @@ RUN apt-get update && apt-get install -y \
         libfreetype-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
-    && apt-get install -y libzip-dev \
-    && docker-php-ext-install zip
+        libzip-dev \
+        libicu-dev \
+        libpq-dev \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instale a extensão intl
-RUN apt-get install -y libicu-dev \
-    && docker-php-ext-install intl
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
 
-RUN pecl install redis-5.3.7 \
-    && pecl install xdebug-3.2.1 \
-    && docker-php-ext-enable redis xdebug
+RUN docker-php-ext-install zip
 
-RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
+RUN docker-php-ext-install intl
+
+RUN docker-php-ext-install pdo pdo_pgsql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-COPY ./ /var/www/html/
-ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer update
+COPY ./ /var/www/ci4-app
+COPY ./codeigniter.conf /etc/apache2/sites-available/codeigniter.conf
+
+RUN a2ensite codeigniter
+
+#ENV COMPOSER_ALLOW_SUPERUSER=1
+
+#RUN composer update
+
+COPY ./cacert.pem /usr/local/etc/php/cacert.pem
+
+RUN echo "curl.cainfo=/usr/local/etc/php/cacert.pem" >> /usr/local/etc/php/php.ini
+
+
