@@ -18,20 +18,13 @@ RUN docker-php-ext-install intl
 
 RUN docker-php-ext-install pdo pdo_pgsql
 
-RUN pecl install redis-5.3.7 \
-    && pecl install xdebug-3.2.1 \
-    && docker-php-ext-enable redis xdebug
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Copie o código da aplicação
-COPY ./ /var/www/html/ci4-app
-
+COPY ./ /var/www/ci4-app
 COPY ./codeigniter.conf /etc/apache2/sites-available/codeigniter.conf
 
 RUN a2ensite codeigniter
 
-ENV COMPOSER_ALLOW_SUPERUSER=1
+#ENV COMPOSER_ALLOW_SUPERUSER=1
 
 #RUN composer update
 
