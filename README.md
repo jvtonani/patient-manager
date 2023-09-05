@@ -24,6 +24,7 @@ Casos de uso
 * PHP 8.2
 * Composer
 * Docker e docker-compose
+* Git
 * Clone da aplicação
 ~~~
 https://github.com/jvtonani/patient-manager.git
