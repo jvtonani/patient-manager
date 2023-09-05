@@ -3,22 +3,39 @@ RUN apt-get update && apt-get install -y \
         libfreetype-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
-    && apt-get install -y libzip-dev \
-    && docker-php-ext-install zip
+        libzip-dev \
+        libicu-dev \
+        libpq-dev \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instale a extensão intl
-RUN apt-get install -y libicu-dev \
-    && docker-php-ext-install intl
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
+
+RUN docker-php-ext-install zip
+
+RUN docker-php-ext-install intl
+
+RUN docker-php-ext-install pdo pdo_pgsql
+
+RUN docker-php-ext-install curl
 
 RUN pecl install redis-5.3.7 \
     && pecl install xdebug-3.2.1 \
     && docker-php-ext-enable redis xdebug
 
-RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Copie o código da aplicação
 COPY ./ /var/www/html/
+
 ENV COMPOSER_ALLOW_SUPERUSER=1
+
 RUN composer update
+
+
+COPY ./seu-arquivo-ca.crt /usr/local/etc/php/cacert.pem
+
+RUN echo "curl.cainfo=/usr/local/etc/php/cacert.pem" >> /usr/local/etc/php/php.ini
+
+
