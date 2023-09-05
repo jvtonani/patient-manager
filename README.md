@@ -65,3 +65,11 @@ https://github.com/jvtonani/patient-manager.git
   php spark serve
   ~~~
   * A aplicação pode ser acessada através do seu ambiente local http://localhost:8080
+
+  ### Testes Unitários
+  * Por mais que seja uma etapa de extrema importância durante o processo de desenvolvimento de software esta etapa não foi trabalhada devido ao fato de que boa parte do tempo disponível para implementação do projeto ter sido gasta com a tentativa de dockerização do ambiente
+  * Foi adicionado apenas um caso de teste para a Library que faz o controle de requisições até a API do github
+  * Execute o comando na pasta raíz do projeto
+   ~~~
+  vendor/bin/phpunit tests/app
+   ~~~
