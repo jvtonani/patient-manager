@@ -1,5 +1,8 @@
 <div class="container-xxl p-2">
     <h2>Listagem de Pacientes</h2>
+        <a href="<?=base_url().'patients/insert'?>">
+            <button type="button" class="btn btn-primary">Adicionar</button>
+        </a>
     <table class="table">
         <thead>
             <tr>

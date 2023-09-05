@@ -24,9 +24,27 @@ class Patient extends BaseController
         return redirect('patients/get');
     }
 
-    public function setPatient(): string 
+    public function setPatientForm()
     {
-        return 'teste';
+        echo view('template/header');
+        echo view('patient/patientForm');
+    }
+
+    public function setPatient() 
+    {
+        $name = $_POST['name'];
+        $gender = $_POST['gender'];
+        $birthday = $_POST['birthday'];
+
+        $patient = new PatientModel();
+        $patient->insert(array(
+            'name' => $name,
+            'birthday' => $birthday,
+            'gender' => $gender
+        ));
+
+        echo view('template/header');
+        echo view('patient/patientUpdateSuccess');
     }
 
     public function getPatient($id)
