@@ -18,8 +18,6 @@ RUN docker-php-ext-install intl
 
 RUN docker-php-ext-install pdo pdo_pgsql
 
-RUN docker-php-ext-install curl
-
 RUN pecl install redis-5.3.7 \
     && pecl install xdebug-3.2.1 \
     && docker-php-ext-enable redis xdebug
@@ -27,14 +25,17 @@ RUN pecl install redis-5.3.7 \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Copie o código da aplicação
-COPY ./ /var/www/html/
+COPY ./ /var/www/html/ci4-app
+
+COPY ./codeigniter.conf /etc/apache2/sites-available/codeigniter.conf
+
+RUN a2ensite codeigniter
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-RUN composer update
+#RUN composer update
 
-
-COPY ./seu-arquivo-ca.crt /usr/local/etc/php/cacert.pem
+COPY ./cacert.pem /usr/local/etc/php/cacert.pem
 
 RUN echo "curl.cainfo=/usr/local/etc/php/cacert.pem" >> /usr/local/etc/php/php.ini
 

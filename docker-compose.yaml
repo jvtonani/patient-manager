@@ -9,9 +9,9 @@ services:
     depends_on:
       - db
     volumes:
-      - ./:/var/www/html/
+      - ./:/var/www/html/ci4-app
     ports:
-      - 8000:8080
+      - 80:80
   db:
     image: postgres
     restart: always 
